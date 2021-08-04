@@ -16,20 +16,23 @@ Param(
     }
     
 
-if($success) {
+    if($success) {
 
-    $AuthToken = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes("$($Credentials.UserName):$($Credentials.Password)"))
+        $AuthToken = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes("$($Credentials.UserName):$($Credentials.Password)"))
 
-    $AuthObject = [PSOBject]@{
-        AuthToken = $AuthToken
-        Site = $uriSite
-        Success = "true"
+        $AuthObject = [PSOBject]@{
+            AuthToken = $AuthToken
+            Site = $uriSite
+            Success = "true"
+        }
+    } else {
+        $AuthObject = [PSOBject]@{
+            AuthToken = ""
+            Site = ""
+            Success = "false"
+        }
+        throw
     }
-} else {
-    $AuthObject = [PSOBject]@{
-        AuthToken = ""
-        Site = ""
-        Success = "false"
-    }
-    throw
+    
+return $AuthObject  
 }
